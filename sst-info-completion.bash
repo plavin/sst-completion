@@ -28,19 +28,19 @@ _sst-info_completions ()
     if [[ "$argument" =~ ^($ele_bar)$ ]];
     then
        # Asking for the completion of an element will appened a dot
-       local suggestions=($(compgen -W "$ele_dot" "${COMP_WORDS[1]}"))
+       local suggestions=($(compgen -W "$ele_dot" "$argument"))
        COMPREPLY="${COMP_WORDS[1]}""."
     elif [[ "$argument" == *"."* ]];
     then
        # Asking for the completion of a word containing a dot will show completions from
        # the components list. Diable nospace for these completions.
-       local suggestions=($(compgen -W "$comp" "${COMP_WORDS[1]}"))
+       local suggestions=($(compgen -W "$comp" "$argument"))
        COMPREPLY=("${suggestions[@]}")
        compopt +o nospace
     else
        # If you're here, you've typed something that isn't a complete element name and don't have
        # a period, so try to complete with element names
-       local suggestions=($(compgen -W "$elements" "${COMP_WORDS[1]}"))
+       local suggestions=($(compgen -W "$elements" "$argument"))
        COMPREPLY=("${suggestions[@]}")
     fi
 }
