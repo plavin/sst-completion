@@ -22,6 +22,8 @@ Add the following line to your .bashrc, after sst-info is available.
 
 * Figure out how to properly install this, either in `~/.bash_completion` or in whatever [this guide](https://github.com/scop/bash-completion/blob/master/README.md#faq) says.
 
+* Check to see if the `local` stuff is useful or needed.
+
 ## Thanks
 
 I used Lazarus Lazaridis's [guide](https://iridakos.com/programming/2018/03/01/bash-programmable-completion-tutorial) to create this script. There are some good link at the end of his post. [Archive](https://web.archive.org/web/20211027111231/https://iridakos.com/programming/2018/03/01/bash-programmable-completion-tutorial).
