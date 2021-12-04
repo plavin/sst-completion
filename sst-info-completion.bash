@@ -1,13 +1,25 @@
 # Read variables from file. Generating strings for ele_bar is too slow to do on every tab.
-elements=$(<elements.txt)
-comp=$(<components.txt)
-ele_bar=$(cat elements.txt | sed 's/ /|/g')
+SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+#elements=$(<$SCRIPT_DIR/elements.txt)
+#comp=$(<$SCRIPT_DIR/components.txt)
+ele_bar=$(cat $SCRIPT_DIR/elements.txt | sed 's/ /|/g')
 
-# Get all components
+#vvvvvvvvvvvvvvvv
+elements=$(sst-info 2>/dev/null | grep ELEMENT | tail -n +2 | cut -d' ' -f 4)
+
 for ele in $elements
 do
-    comp="$comp"$(sst-info $ele | grep "SubComponent " | tr -d [:blank:] | sed 's/SubComponent.://' | sed "s/^/$ele./")
+   comp="$comp"$(sst-info $ele | grep "SubComponent " | tr -d [:blank:] | sed -r 's/SubComponent[[:digit:]]+://' | sed "s/^/$ele./")
 done
+#vvvvvvvvvvvvvvvv
+
+ele_bar=$(echo $elements | sed 's/ /|/g')
+
+## Get all components
+#for ele in $elements
+#do
+#    comp="$comp"$(sst-info $ele | grep "SubComponent " | tr -d [:blank:] | sed 's/SubComponent.://' | sed "s/^/$ele./")
+#done
 
 _sst-info_completions ()
 {
