@@ -1,8 +1,6 @@
 ele="mem nic"
 ele_bar="mem|nic"
-ele_dot="mem. nic."
-mem_comp="mem.f1 mem.f2"
-nic_comp="nic.f1 nic.f2"
+comp="mem.f1 mem.f2 nic.f1 nic.f2"
 
 _fofo_completions()
 {
@@ -10,10 +8,21 @@ _fofo_completions()
       return
    fi
 
-   if [[ "${COMP_WORDS[1]}" =~ ^($ele_bar)$ ]];
+   local argument=${COMP_WORDS[1]}
+
+
+   if [[ "$argument" =~ ^($ele_bar)$ ]];
    then
+      # Asking for the completion of an element will appened a dot
       local suggestions=($(compgen -W "$ele_dot" "${COMP_WORDS[1]}"))
       COMPREPLY="${COMP_WORDS[1]}""."
+   elif [[ "$argument" == *"."* ]];
+   then
+      # Asking for the completion of a word containing a dot will show completions from
+      # the components list
+      local suggestions=($(compgen -W "$comp" "${COMP_WORDS[1]}"))
+      COMPREPLY=("${suggestions[@]}")
+      compopt +o nospace
    else
       local suggestions=($(compgen -W "$ele" "${COMP_WORDS[1]}"))
       COMPREPLY=("${suggestions[@]}")
