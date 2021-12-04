@@ -22,7 +22,8 @@ Add the following line to your .bashrc, after sst-info is available.
 
 * Figure out how to properly install this, either in `~/.bash_completion` or in whatever [this guide](https://github.com/scop/bash-completion/blob/master/README.md#faq) says.
 
-* Check to see if the `local` stuff is useful or needed.
+* Fix weird cassini completion.
+
 
 ## Thanks
 
