@@ -8,9 +8,13 @@
 elements=$(sst-info 2>/dev/null | grep ELEMENT | tail -n +2 | cut -d' ' -f 4)
 
 # Find every element in every component.
+comp=""
 for ele in $elements
 do
     comp="$comp"$(sst-info "$ele" | grep "SubComponent " | tr -d "[:blank:]" | sed -r 's/SubComponent[[:digit:]]+://' | sed "s/^/$ele./")
+    comp="$comp "
+    comp="$comp"$(sst-info "$ele" | grep " Component " | tr -d "[:blank:]" | sed -r 's/Component[[:digit:]]+://' | sed "s/^/$ele./")
+    comp="$comp "
 done
 
 # Create a regex string with | between each component.
@@ -34,13 +38,13 @@ _sst-info_completions ()
     then
        # Asking for the completion of a word containing a dot will show completions from
        # the components list. Diable nospace for these completions.
-       mapfile -t suggestions < <(compgen -W "$comp" "$argument") 
+       mapfile -t suggestions < <(compgen -W "$comp" "$argument")
        COMPREPLY=("${suggestions[@]}")
        compopt +o nospace
     else
        # If you're here, you've typed something that isn't a complete element name and don't have
        # a period, so try to complete with element names
-       mapfile -t suggestions < <(compgen -W "$elements" "$argument") 
+       mapfile -t suggestions < <(compgen -W "$elements" "$argument")
        COMPREPLY=("${suggestions[@]}")
     fi
 }
