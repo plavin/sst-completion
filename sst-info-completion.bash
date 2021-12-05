@@ -7,7 +7,7 @@
 # Use sst-info to find all installed elements
 elements=$(sst-info 2>/dev/null | grep ELEMENT | tail -n +2 | cut -d' ' -f 4)
 
-# Find every element in every component.
+# Find every component and subcomponent, form strings like "element.subcomponent", and append them to the component list.
 comp=""
 for ele in $elements
 do
