@@ -1,6 +1,6 @@
 # SST-Completions
 
-This project provides bash auto-complete suggestions for sst-info, which is a part of the [SST Simulator](https://sst-simulator.org/). It provides information about the components you have installed. As SST-Elements provides so many components, it can be difficult to parse this list. This command should make it easier to explore your installed components!
+This project provides bash auto-complete suggestions for sst-info, which is a part of the [SST Simulator](https://sst-simulator.org/). It provides information about the components you have installed. As SST-Elements provides so many components, it can be difficult to know what is available. This command should make it easier to explore your installed components!
 
 Hopefully, this will be integrated into [sst-core](https://github.com/sstsimulator/sst-core). Please open an issue if you have suggestions for how to improve this script or if you think some other sst command needs completions.
 
@@ -14,16 +14,19 @@ Add the following line to your .bashrc, after sst-info is available.
 
 ## TODOs
 
-* Integrate this into the sst-core installation script, and make sure it is updated when new elements are added either throughy the sst-elements installation or sst-register.
+* Integrate this into the sst-core installation script, and make sure it is updated when new elements are added either through the sst-elements installation or sst-register.
 
 * Test with zsh and ksh.
-
-* Test with [shellcheck](https://www.shellcheck.net/).
 
 * Figure out how to properly install this, either in `~/.bash_completion` or in whatever [this guide](https://github.com/scop/bash-completion/blob/master/README.md#faq) says.
 
 * Fix weird cassini completion.
 
+* Fix kingsley output (no components)
+
+* Investigate more robust ways to get the element and component lists, instead of just using grep, etc. Perhaps functionality can be added to sst-info to support this, or I can figure out sst-info's XML output
+
+* Check that everything is in fact a component (`memHierarchy.vaultsimmerlin.arb.output.basic` is not)
 
 ## Thanks
 
