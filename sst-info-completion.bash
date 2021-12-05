@@ -30,22 +30,17 @@ _sst-info_completions ()
     # Grab the word we're trying to complete
     local argument=${COMP_WORDS[1]}
 
-    if [[ "$argument" =~ ^($ele_bar)$ ]];
+    if [[ "$argument" =~ ^($ele_bar)$ ]] || [[ "$argument" == *"."* ]];
     then
-       # Asking for the completion of an element will appened a dot
-       COMPREPLY=("$argument"".")
-    elif [[ "$argument" == *"."* ]];
-    then
-       # Asking for the completion of a word containing a dot will show completions from
-       # the components list. Disable nospace for these completions.
-       mapfile -t suggestions < <(compgen -W "$comp" "$argument")
-       COMPREPLY=("${suggestions[@]}")
-       compopt +o nospace
+        # If the argument is an element name (first clause above), then we switch to the component list.
+        # Also use this list if there is a dot in the argument, so that we can continue using this list
+        # even after we've filled part of a component.
+        mapfile -t COMPREPLY < <(compgen -W "$comp" "$argument")
+        compopt +o nospace
     else
-       # If you're here, you've typed something that isn't a complete element name and don't have
-       # a period, so try to complete with element names
-       mapfile -t suggestions < <(compgen -W "$elements" "$argument")
-       COMPREPLY=("${suggestions[@]}")
+        # If you're here, you've typed something that isn't a complete element name and don't have
+        # a period, so try to complete with element names
+        mapfile -t COMPREPLY < <(compgen -W "$elements" "$argument")
     fi
 }
 
