@@ -35,9 +35,6 @@ miranda.RandomGenerator  miranda.ReverseSingleStreamGenerator
 
 * Figure out how to properly install this, either in `~/.bash_completion` or in whatever [this guide](https://github.com/scop/bash-completion/blob/master/README.md#faq) says.
 
-* Test with zsh and ksh.
-
-
 ## Thanks
 
 I used Lazarus Lazaridis's [guide](https://iridakos.com/programming/2018/03/01/bash[programmable-completion-tutorial) to create this script. There are some good link at the end of his post.
