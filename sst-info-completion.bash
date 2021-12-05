@@ -7,13 +7,14 @@
 # Use sst-info to find all installed elements
 elements=$(sst-info 2>/dev/null | grep ELEMENT | tail -n +2 | cut -d' ' -f 4)
 
-# Find every component and subcomponent, form strings like "element.subcomponent", and append them to the component list.
+# Find every component and subcomponent, form strings like "element.subcomponent",
+# and append them to the component list.
+
 components=""
+regex='\(Sub\)\{0,1\}Component[[:digit:]]\+:'
 for ele in $elements
 do
-    components="$components"$(sst-info "$ele" | grep "SubComponent [[:digit:]]\+" | tr -d "[:blank:]" | sed -r 's/SubComponent[[:digit:]]+://' | sed "s/^/$ele./")
-    components="$components "
-    components="$components"$(sst-info "$ele" | grep " Component [[:digit:]]\+:" | tr -d "[:blank:]" | sed -r 's/Component[[:digit:]]+://' | sed "s/^/$ele./")
+    components="$components"$(sst-info "$ele" | tr -d "[:blank:]" | grep "$regex" | sed "s/$regex//" | sed "s/^/$ele./")
     components="$components "
 done
 
@@ -37,8 +38,8 @@ _sst-info_completions ()
         mapfile -t COMPREPLY < <(compgen -W "$components" "$argument")
         compopt +o nospace
     else
-        # If you're here, you've typed something that isn't a complete element name and don't have
-        # a period, so try to complete with element names
+        # If you're here, you've typed something that isn't a complete element name
+        # so try to complete with element names
         mapfile -t COMPREPLY < <(compgen -W "$elements" "$argument")
     fi
 }
