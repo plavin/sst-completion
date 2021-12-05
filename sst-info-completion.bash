@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # sst-info-completions.bash
 # This file provides bash autocompletion functionality for sst-info.
 # Author: Patrick Lavin
@@ -8,12 +10,11 @@ elements=$(sst-info 2>/dev/null | grep ELEMENT | tail -n +2 | cut -d' ' -f 4)
 # Find every element in every component.
 for ele in $elements
 do
-    comp="$comp"$(sst-info $ele | grep "SubComponent " | tr -d [:blank:] | sed -r 's/SubComponent[[:digit:]]+://' | sed "s/^/$ele./")
+    comp="$comp"$(sst-info "$ele" | grep "SubComponent " | tr -d "[:blank:]" | sed -r 's/SubComponent[[:digit:]]+://' | sed "s/^/$ele./")
 done
 
 # Create a regex string with | between each component.
-ele_bar=$(echo $elements | sed 's/ /|/g')
-
+ele_bar="${elements//$'\n'/|}"
 
 _sst-info_completions ()
 {
@@ -28,19 +29,18 @@ _sst-info_completions ()
     if [[ "$argument" =~ ^($ele_bar)$ ]];
     then
        # Asking for the completion of an element will appened a dot
-       local suggestions=($(compgen -W "$ele_dot" "$argument"))
-       COMPREPLY="${COMP_WORDS[1]}""."
+       COMPREPLY=("$argument"".")
     elif [[ "$argument" == *"."* ]];
     then
        # Asking for the completion of a word containing a dot will show completions from
        # the components list. Diable nospace for these completions.
-       local suggestions=($(compgen -W "$comp" "$argument"))
+       mapfile -t suggestions < <(compgen -W "$comp" "$argument") 
        COMPREPLY=("${suggestions[@]}")
        compopt +o nospace
     else
        # If you're here, you've typed something that isn't a complete element name and don't have
        # a period, so try to complete with element names
-       local suggestions=($(compgen -W "$elements" "$argument"))
+       mapfile -t suggestions < <(compgen -W "$elements" "$argument") 
        COMPREPLY=("${suggestions[@]}")
     fi
 }
