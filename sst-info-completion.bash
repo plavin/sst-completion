@@ -37,7 +37,7 @@ _sst-info_completions ()
     elif [[ "$argument" == *"."* ]];
     then
        # Asking for the completion of a word containing a dot will show completions from
-       # the components list. Diable nospace for these completions.
+       # the components list. Disable nospace for these completions.
        mapfile -t suggestions < <(compgen -W "$comp" "$argument")
        COMPREPLY=("${suggestions[@]}")
        compopt +o nospace
