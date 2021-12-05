@@ -8,13 +8,13 @@
 elements=$(sst-info 2>/dev/null | grep ELEMENT | tail -n +2 | cut -d' ' -f 4)
 
 # Find every component and subcomponent, form strings like "element.subcomponent", and append them to the component list.
-comp=""
+components=""
 for ele in $elements
 do
-    comp="$comp"$(sst-info "$ele" | grep "SubComponent [[:digit:]]\+" | tr -d "[:blank:]" | sed -r 's/SubComponent[[:digit:]]+://' | sed "s/^/$ele./")
-    comp="$comp "
-    comp="$comp"$(sst-info "$ele" | grep " Component [[:digit:]]\+:" | tr -d "[:blank:]" | sed -r 's/Component[[:digit:]]+://' | sed "s/^/$ele./")
-    comp="$comp "
+    components="$components"$(sst-info "$ele" | grep "SubComponent [[:digit:]]\+" | tr -d "[:blank:]" | sed -r 's/SubComponent[[:digit:]]+://' | sed "s/^/$ele./")
+    components="$components "
+    components="$components"$(sst-info "$ele" | grep " Component [[:digit:]]\+:" | tr -d "[:blank:]" | sed -r 's/Component[[:digit:]]+://' | sed "s/^/$ele./")
+    components="$components "
 done
 
 # Create a regex string with | between each component.
@@ -27,15 +27,14 @@ _sst-info_completions ()
       return
     fi
 
-    # Grab the word we're trying to complete
+    # Grab the word we're trying to complete. The basename is everything before the first period.
     local argument=${COMP_WORDS[1]}
+    local basename=${argument%%.*}
 
-    if [[ "$argument" =~ ^($ele_bar)$ ]] || [[ "$argument" == *"."* ]];
+    if [[ "$basename" =~ ^($ele_bar)$ ]];
     then
-        # If the argument is an element name (first clause above), then we switch to the component list.
-        # Also use this list if there is a dot in the argument, so that we can continue using this list
-        # even after we've filled part of a component.
-        mapfile -t COMPREPLY < <(compgen -W "$comp" "$argument")
+        # If the argument begins with an element name, then we switch to the component list.
+        mapfile -t COMPREPLY < <(compgen -W "$components" "$argument")
         compopt +o nospace
     else
         # If you're here, you've typed something that isn't a complete element name and don't have
