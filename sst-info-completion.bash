@@ -11,9 +11,9 @@ elements=$(sst-info 2>/dev/null | grep ELEMENT | tail -n +2 | cut -d' ' -f 4)
 comp=""
 for ele in $elements
 do
-    comp="$comp"$(sst-info "$ele" | grep "SubComponent " | tr -d "[:blank:]" | sed -r 's/SubComponent[[:digit:]]+://' | sed "s/^/$ele./")
+    comp="$comp"$(sst-info "$ele" | grep "SubComponent [[:digit:]]\+" | tr -d "[:blank:]" | sed -r 's/SubComponent[[:digit:]]+://' | sed "s/^/$ele./")
     comp="$comp "
-    comp="$comp"$(sst-info "$ele" | grep " Component " | tr -d "[:blank:]" | sed -r 's/Component[[:digit:]]+://' | sed "s/^/$ele./")
+    comp="$comp"$(sst-info "$ele" | grep " Component [[:digit:]]\+:" | tr -d "[:blank:]" | sed -r 's/Component[[:digit:]]+://' | sed "s/^/$ele./")
     comp="$comp "
 done
 

@@ -32,21 +32,13 @@ miranda.RandomGenerator  miranda.ReverseSingleStreamGenerator
 
 ## TODOs
 
-* Integrate this into the sst-core installation script, and make sure it is updated when new elements are added either through the sst-elements installation or sst-register.
-
-* Test with zsh and ksh.
+* Integrate this into the sst-core installation script, and make sure it is updated when new elements are added either through the sst-elements installation or sst-register. At the same time, make this script more robust by generating the elements and components names.
 
 * Figure out how to properly install this, either in `~/.bash_completion` or in whatever [this guide](https://github.com/scop/bash-completion/blob/master/README.md#faq) says.
 
-* Simplify loop that grabs components and subcomponents separately. Probably integrate with XML stuff.
+* Test with zsh and ksh.
 
-* Investigate more robust ways to get the element and component lists, instead of just using grep, etc. Perhaps functionality can be added to sst-info to support this, or I can figure out sst-info's XML output
 
-* Check that everything is in fact a component
-
-* Check that the right number of elements and components are output.
-
-* Fix strage Samba completion
 
 ## Thanks
 
