@@ -6,20 +6,23 @@
 
 # Use sst-info to find all installed elements
 elements=$(sst-info 2>/dev/null | grep ELEMENT | tail -n +2 | cut -d' ' -f 4)
+# Create a regex string with | between each component.
+ele_bar="${elements//$'\n'/|}"
+
+# Regex used in generating component names.
+# Example matches: "SubComponent1:", "Component13:"
+regex='\(Sub\)\{0,1\}Component[[:digit:]]\+:'
 
 # Find every component and subcomponent, form strings like "element.subcomponent",
 # and append them to the component list.
-
 components=""
-regex='\(Sub\)\{0,1\}Component[[:digit:]]\+:'
 for ele in $elements
 do
-    components="$components"$(sst-info "$ele" | tr -d "[:blank:]" | grep "$regex" | sed "s/$regex//" | sed "s/^/$ele./")
+    # [Pipes] Get element info | remove whitespace | find lines with (sub)component names, remove the word (Sub)Component
+    # | prepend the element name.
+    components="$components"$(sst-info "$ele" | tr -d "[:blank:]" | sed -n "s/$regex//p" | sed "s/^/$ele./")
     components="$components "
 done
-
-# Create a regex string with | between each component.
-ele_bar="${elements//$'\n'/|}"
 
 _sst-info_completions ()
 {
