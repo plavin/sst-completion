@@ -12,6 +12,24 @@ Add the following line to your .bashrc, after sst-info is available.
 
 ```source ~/sst-completion/sst-info-completion.bash```
 
+## Usage
+
+This tool provides suggestions for sst-info arguments in 3 steps:
+
+1. It will first try to guess which element you want. As long as there is no period in the argument, this is what the tool thinks you want to do. For example, typing the letter `m` will bring up elements starting with `m`.
+
+```
+$sst-info m<TAB><TAB>
+memHierarchy  merlin  miranda
+```
+
+2. If you've typed the name of an element and hit tab again, it will append a period for you.
+3. If you continue to hit tab, you will be prompted with the names of components and subcomponents in that element.
+```
+$sst-info miranda.R<TAB><TAB>
+miranda.RandomGenerator  miranda.ReverseSingleStreamGenerator
+```
+
 ## TODOs
 
 * Integrate this into the sst-core installation script, and make sure it is updated when new elements are added either through the sst-elements installation or sst-register.
