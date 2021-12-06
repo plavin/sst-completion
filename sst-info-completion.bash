@@ -5,8 +5,8 @@
 # Author: Patrick Lavin
 
 # Use sst-info to find all installed elements
-elements=$(sst-info 2>/dev/null | grep ELEMENT | tail -n +2 | cut -d' ' -f 4)
-# Create a regex string with | between each component.
+elements=$(sst-info 2>/dev/null | sed -n "s/ELEMENT [[:digit:]]\+ = //p" | cut -d' ' -f1)
+# Create a list of elements but replace spaces with '|'
 ele_bar="${elements//$'\n'/|}"
 
 # Regex used in generating component names.
